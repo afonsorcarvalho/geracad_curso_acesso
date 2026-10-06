@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_geracad_acesso" model="ir.ui.view">
+        <field name="name">res.partner.form.geracad.acesso</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="e_professor" invisible="1"/>
+                    <field name="geracad_acesso_ativo" invisible="1"/>
+                    <button name="action_ativar_geracad_professor" type="object"
+                            string="Ativar acesso geracad" class="btn-primary"
+                            groups="geracad_curso.group_geracad_curso_secretaria,geracad_curso.group_geracad_curso_administrator,base.group_system"
+                            attrs="{'invisible': ['|', ('e_professor', '=', False), ('geracad_acesso_ativo', '=', True)]}"/>
+                    <button name="action_desativar_geracad_professor" type="object"
+                            string="Desativar acesso geracad"
+                            groups="geracad_curso.group_geracad_curso_secretaria,geracad_curso.group_geracad_curso_administrator,base.group_system"
+                            attrs="{'invisible': ['|', ('e_professor', '=', False), ('geracad_acesso_ativo', '=', False)]}"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>

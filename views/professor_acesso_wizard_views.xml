@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="geracad_professor_acesso_wizard_form" model="ir.ui.view">
+        <field name="name">geracad.professor.acesso.wizard.form</field>
+        <field name="model">geracad.professor.acesso.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Conceder acesso ao sistema">
+                <p>
+                    O professor será cadastrado como usuário interno do Geracad (grupo Professor)
+                    e receberá um e-mail de convite para cadastrar a senha.
+                </p>
+                <group>
+                    <field name="partner_id"/>
+                    <field name="email" widget="email" placeholder="professor@exemplo.com"/>
+                </group>
+                <footer>
+                    <button name="action_conceder" type="object" string="Conceder acesso e enviar convite" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_geracad_professor_acesso_wizard" model="ir.actions.act_window">
+        <field name="name">Conceder acesso ao sistema</field>
+        <field name="res_model">geracad.professor.acesso.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="geracad_curso_professores_form_acesso" model="ir.ui.view">
+        <field name="name">geracad.curso.professores.form.acesso</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="geracad_curso.geracad_curso_professores_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="geracad_acesso_ativo" invisible="1"/>
+                    <button name="%(action_geracad_professor_acesso_wizard)d" type="action"
+                            string="Conceder acesso ao sistema" class="btn-primary"
+                            context="{'default_partner_id': active_id}"
+                            groups="geracad_curso.group_geracad_curso_secretaria,geracad_curso.group_geracad_curso_administrator,base.group_system"
+                            attrs="{'invisible': [('geracad_acesso_ativo', '=', True)]}"/>
+                    <button name="%(action_geracad_professor_acesso_wizard)d" type="action"
+                            string="Reenviar convite"
+                            context="{'default_partner_id': active_id}"
+                            groups="geracad_curso.group_geracad_curso_secretaria,geracad_curso.group_geracad_curso_administrator,base.group_system"
+                            attrs="{'invisible': [('geracad_acesso_ativo', '=', False)]}"/>
+                    <button name="action_desativar_geracad_professor" type="object"
+                            string="Revogar acesso"
+                            confirm="Revogar o acesso deste professor ao sistema?"
+                            groups="geracad_curso.group_geracad_curso_secretaria,geracad_curso.group_geracad_curso_administrator,base.group_system"
+                            attrs="{'invisible': [('geracad_acesso_ativo', '=', False)]}"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>

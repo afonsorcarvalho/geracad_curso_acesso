@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- noupdate=0: conteúdo do convite é mantido pelo código do módulo. -->
+    <data noupdate="0">
+        <record id="mail_template_convite_professor" model="mail.template">
+            <field name="name">Geracad: Convite de acesso do professor</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="subject">Seu acesso ao sistema Geracad - ${object.company_id.name}</field>
+            <field name="email_from">${(object.company_id.email_formatted or user.email_formatted) | safe}</field>
+            <field name="email_to">${object.email | safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #eef2f6; padding: 32px 12px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #2d3748;">
+<tr><td align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="600" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <!-- Logo -->
+    <tr>
+        <td align="center" style="padding: 28px 24px 20px 24px; background-color: #ffffff; border-bottom: 1px solid #e2e8f0;">
+            <img src="${object.get_base_url().rstrip('/')}/logo.png?company=${object.company_id.id}"
+                 alt="${object.company_id.name}" style="max-height: 70px; max-width: 220px; display: block; border: 0;"/>
+        </td>
+    </tr>
+    <!-- Faixa de título -->
+    <tr>
+        <td align="center" style="background: #0a9fe0; background-image: linear-gradient(135deg, #0a9fe0 0%, #0672b8 100%); padding: 30px 24px;">
+            <div style="font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #d6eefb;">Bem-vindo ao Geracad</div>
+            <div style="font-size: 24px; font-weight: 700; color: #ffffff; margin-top: 6px;">Seu acesso de professor está pronto</div>
+        </td>
+    </tr>
+    <!-- Corpo -->
+    <tr>
+        <td style="padding: 32px 36px 8px 36px; font-size: 15px; line-height: 1.6;">
+            <p style="margin: 0 0 16px 0; font-size: 17px;">Olá, <strong>${object.name}</strong>!</p>
+            <p style="margin: 0 0 16px 0;">
+                A <strong>${object.company_id.name}</strong> liberou seu acesso ao sistema
+                <strong>Geracad</strong>. Por ele você lança aulas, frequência e notas dos seus diários.
+            </p>
+            <p style="margin: 0;">Para começar, cadastre sua senha clicando no botão abaixo:</p>
+        </td>
+    </tr>
+    <!-- Botão -->
+    <tr>
+        <td align="center" style="padding: 24px 36px;">
+            <table border="0" cellpadding="0" cellspacing="0"><tr>
+                <td align="center" style="border-radius: 6px; background-color: #0a9fe0;">
+                    <a href="${object.partner_id.signup_url}" target="_blank"
+                       style="display: inline-block; padding: 14px 34px; font-size: 16px; font-weight: 700; color: #ffffff; text-decoration: none; border-radius: 6px;">
+                        Cadastrar minha senha
+                    </a>
+                </td>
+            </tr></table>
+        </td>
+    </tr>
+    <!-- Dados de acesso -->
+    <tr>
+        <td style="padding: 0 36px 8px 36px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+                <tr><td style="padding: 16px 20px; font-size: 14px; line-height: 1.7;">
+                    <div style="color: #718096; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Seus dados de acesso</div>
+                    <div><span style="color: #718096;">Endereço:</span> <a href="${object.get_base_url().rstrip('/')}/web/login" style="color: #0672b8;">${object.get_base_url().rstrip('/')}</a></div>
+                    <div><span style="color: #718096;">Login:</span> <strong>${object.login}</strong></div>
+                </td></tr>
+            </table>
+            <p style="margin: 12px 0 0 0; font-size: 13px; color: #718096;">
+                ⏳ O link é válido por <strong>7 dias</strong>. Se expirar, peça um novo convite à secretaria.
+            </p>
+        </td>
+    </tr>
+    <!-- Ajuda -->
+    <tr>
+        <td style="padding: 24px 36px 32px 36px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #fffbea; border-left: 4px solid #f6ad1b; border-radius: 6px;">
+                <tr><td style="padding: 16px 20px; font-size: 14px; line-height: 1.6;">
+                    <div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">🎬 Precisa de ajuda para começar?</div>
+                    No sistema, abra o aplicativo <strong>Diários</strong> e clique no menu
+                    <strong>Ajuda</strong>, no topo da tela. Lá há <strong>vídeos</strong> mostrando passo a passo
+                    como lançar aulas, frequência e notas e como usar o sistema.
+                </td></tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Rodapé -->
+    <tr>
+        <td align="center" style="background-color: #f7fafc; border-top: 1px solid #e2e8f0; padding: 20px 24px; font-size: 12px; color: #a0aec0; line-height: 1.6;">
+            <strong style="color: #718096;">${object.company_id.name}</strong><br/>
+            % if object.company_id.phone:
+            ${object.company_id.phone}
+            % endif
+            % if object.company_id.phone and object.company_id.email:
+             · 
+            % endif
+            % if object.company_id.email:
+            ${object.company_id.email}
+            % endif
+            <br/>Este é um e-mail automático, não é necessário respondê-lo.
+        </td>
+    </tr>
+</table>
+</td></tr>
+</table>
+            </field>
+        </record>
+    </data>
+</odoo>

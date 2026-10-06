@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_professor_acesso_wizard_secretaria,professor.acesso.wizard.secretaria,model_geracad_professor_acesso_wizard,geracad_curso.group_geracad_curso_secretaria,1,1,1,1
+access_professor_acesso_wizard_admin,professor.acesso.wizard.admin,model_geracad_professor_acesso_wizard,geracad_curso.group_geracad_curso_administrator,1,1,1,1
+access_professor_acesso_wizard_system,professor.acesso.wizard.system,model_geracad_professor_acesso_wizard,base.group_system,1,1,1,1

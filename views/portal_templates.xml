@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_aviso_matricula" name="Aviso de Matrícula Sem Acesso">
+        <t t-call="portal.portal_layout">
+            <div class="container my-4">
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading mb-2">
+                        Matrícula
+                        <span t-esc="dict(matricula._fields['state'].selection).get(matricula.state, matricula.state)"/>
+                    </h4>
+                    <p class="mb-0">
+                        Esta matrícula não está ativa. O conteúdo (histórico, horários e
+                        financeiro) fica indisponível no portal enquanto a matrícula não
+                        estiver com o status <strong>Inscrito</strong>.
+                    </p>
+                    <hr t-if="matricula.motivo_state_matricula"/>
+                    <p t-if="matricula.motivo_state_matricula" class="mb-0">
+                        <strong>Motivo:</strong>
+                        <span t-esc="matricula.motivo_state_matricula"/>
+                    </p>
+                    <div class="mt-3">
+                        <a href="/my" class="btn btn-secondary btn-sm">Voltar ao portal</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Matrículas: sem acesso => sem link, só o número -->
+    <template id="portal_my_matriculas_acesso" inherit_id="geracad_curso.portal_my_matriculas">
+        <xpath expr="//a[@t-att-href='matricula.get_portal_url()']" position="replace">
+            <t t-if="matricula_tem_acesso(matricula.state)">
+                <a t-att-href="matricula.get_portal_url()">
+                    <t t-esc="matricula.name"/>
+                </a>
+            </t>
+            <t t-if="not matricula_tem_acesso(matricula.state)">
+                <t t-esc="matricula.name"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Horários: sem acesso => esconde botão "Ver Horário", mostra badge do estado -->
+    <template id="portal_my_horarios_acesso" inherit_id="geracad_curso.portal_my_horarios">
+        <xpath expr="//a[hasclass('btn-primary')]" position="attributes">
+            <attribute name="t-if">matricula.curso_turma_id and matricula_tem_acesso(matricula.state)</attribute>
+        </xpath>
+        <xpath expr="//a[hasclass('btn-primary')]" position="after">
+            <span t-if="not matricula_tem_acesso(matricula.state)" class="badge badge-warning"
+                  t-esc="dict(matricula._fields['state'].selection).get(matricula.state, matricula.state)"/>
+        </xpath>
+    </template>
+</odoo>
