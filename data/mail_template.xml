@@ -6,7 +6,9 @@
             <field name="name">Geracad: Convite de acesso do professor</field>
             <field name="model_id" ref="base.model_res_users"/>
             <field name="subject">Seu acesso ao sistema Geracad - ${object.company_id.name}</field>
-            <field name="email_from">${(object.company_id.email_formatted or user.email_formatted) | safe}</field>
+            <!-- From precisa ser do domínio do SMTP (jgma.com.br): netcom-ma.com.br tem DMARC p=reject. -->
+            <field name="email_from">"${object.company_id.name}" &lt;afonso@jgma.com.br&gt;</field>
+            <field name="reply_to">${(object.company_id.email_formatted or user.email_formatted) | safe}</field>
             <field name="email_to">${object.email | safe}</field>
             <field name="lang">${object.lang}</field>
             <field name="auto_delete" eval="True"/>
